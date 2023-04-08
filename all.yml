@@ -3,5 +3,6 @@
   hosts: all
   gather_facts: true
   roles:
-    - docker
-    - swarm
+    - role: install
+      become: true
+    - role: swarm
