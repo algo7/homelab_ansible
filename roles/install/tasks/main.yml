@@ -7,12 +7,12 @@
       - curl
       - gnupg
 
-- name: Add Docker’s official GPG key
+- name: Add Docker's official GPG key
   ansible.builtin.apt_key:
     url: 'https://download.docker.com/linux/ubuntu/gpg'
     state: present
 
-- name: Add Docker’s official APT repository
+- name: Add Docker's official APT repository
   ansible.builtin.apt_repository:
     update_cache: true
     filename: docker
