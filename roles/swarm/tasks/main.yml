@@ -7,10 +7,17 @@
   when: inventory_hostname == groups['swarm_managers'][0]
   changed_when: false
 
+- name: Debug
+  ansible.builtin.debug:
+    msg: '{{ swarm_status.stdout }}'
+  when: inventory_hostname == groups['swarm_managers'][0]
+
 - name: Initialize Docker Swarm
   ansible.builtin.command:
     cmd: docker swarm init --advertise-addr {{ ansible_default_ipv4.address }}
-  when: swarm_status.stdout == 'inactive'
+  # inventory_hostname needs to come first, ansible will try to evalue swarm_status.stdout on all hosts
+  # causing an err on worker nodes
+  when: inventory_hostname == groups['swarm_managers'][0] and swarm_status.stdout == 'inactive'
   changed_when: false
 
 - name: Get Docker Swarm join token
