@@ -1,0 +1,4 @@
+---
+- name: Install Docker and Form Docker Swarm
+  hosts: all
+  gather_facts: true

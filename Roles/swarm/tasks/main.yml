@@ -1,0 +1,25 @@
+- name: Check if Docker Swarm is already initialized
+  ansible.builtin.command:
+    cmd: docker info --format '{{ '{{.Swarm.LocalNodeState}}' }}'
+  register: swarm_status
+  when: inventory_hostname == groups['swarm_manager'][0]
+  changed_when: false
+
+- name: Initialize Docker Swarm
+  ansible.builtin.command:
+    cmd: docker swarm init --advertise-addr {{ ansible_default_ipv4.address }}
+  when: swarm_status.stdout == 'inactive'
+  changed_when: false
+
+- name: Get Docker Swarm join token
+  ansible.builtin.command:
+    cmd: docker swarm join-token worker -q
+  register: join_token
+  when: inventory_hostname == groups['swarm_manager'][0]
+  changed_when: false
+
+- name: Join Docker Swarm
+  ansible.builtin.command:
+    cmd: docker swarm join --token {{ join_token.stdout }} {{ hostvars[groups['swarm_manager'][0]]['ansible_default_ipv4']['address'] }}:2377
+  when: inventory_hostname != groups['swarm_manager']
+  changed_when: false
