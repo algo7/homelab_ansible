@@ -1,0 +1,12 @@
+---
+- name: List files on hosts in the 'managers' and 'workers' groups
+  hosts: managers,workers
+  gather_facts: true
+  tasks:
+    - name: Run 'ls' command
+      ansible.builtin.command:
+        cmd: ls -la
+      register: result
+    - name: Print output
+      ansible.builtin.debug:
+        msg: '{{ result.stdout }}'
