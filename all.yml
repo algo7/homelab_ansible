@@ -1,3 +1,4 @@
+# code: language=ansible
 ---
 - name: Install Docker and Form Docker Swarm
   hosts: all
