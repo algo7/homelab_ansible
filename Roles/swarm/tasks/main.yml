@@ -1,3 +1,4 @@
+---
 - name: Check if Docker Swarm is already initialized
   ansible.builtin.command:
     cmd: docker info --format '{{ '{{.Swarm.LocalNodeState}}' }}'
