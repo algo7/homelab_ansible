@@ -1,0 +1,47 @@
+---
+- name: Install Docker on all hosts
+  hosts: all
+  gather_facts: true
+  become: true
+  tasks:
+    - name: Install prerequisites
+      ansible.builtin.apt:
+        update_cache: true
+        pkg:
+          - ca-certificates
+          - curl
+          - gnupg
+
+    - name: Add Docker’s official GPG key
+      ansible.builtin.apt_key:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        state: present
+
+    - name: Add Docker’s official APT repository
+      ansible.builtin.apt_repository:
+        update_cache: true
+        filename: docker
+        repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu jammy stable
+        state: present
+
+    - name: Install Docker
+      ansible.builtin.apt:
+        update_cache: true
+        pkg:
+          - docker-ce
+          - docker-ce-cli
+          - containerd.io
+          - docker-buildx-plugin
+          - docker-compose-plugin
+
+    - name: Add user to Docker group
+      ansible.builtin.user:
+        name: '{{ ansible_user }}'
+        groups: docker
+        append: true
+
+    - name: Enable and start Docker
+      ansible.builtin.systemd:
+        name: docker
+        state: started
+        enabled: true
