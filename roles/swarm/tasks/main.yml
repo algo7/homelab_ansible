@@ -16,9 +16,23 @@
 - name: Create Docker Swarm manager non-operational group
   ansible.builtin.add_host:
     hostname: '{{ item }}'
-    groups: swarm_manager_operational
+    groups: swarm_manager_non_operational
   with_items: '{{ groups["swarm_managers"] }}'
   when: inventory_hostname in groups['swarm_managers'] and swarm_status.stdout == 'inactive'
+
+- name: Create Docker Swarm worker operational group
+  ansible.builtin.add_host:
+    hostname: '{{ item }}'
+    groups: swarm_worker_operational
+  with_items: '{{ groups["swarm_workers"] }}'
+  when: inventory_hostname in groups['swarm_workers'] and swarm_status.stdout == 'active'
+
+- name: Create Docker Swarm worker non-operational group
+  ansible.builtin.add_host:
+    hostname: '{{ item }}'
+    groups: swarm_worker_non_operational
+  with_items: '{{ groups["swarm_workers"] }}'
+  when: inventory_hostname in groups['swarm_workers'] and swarm_status.stdout == 'inactive'
 
 - name: Initialize Docker Swarm
   ansible.builtin.command:
