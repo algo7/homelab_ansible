@@ -11,38 +11,40 @@
     name: '{{ item }}'
     groups: initialized_managers
   loop: '{{ groups["swarm_managers"] }}'
-  when: hostvars[item]['swarm_status'].stdout == 'active'
+  when:
+    - hostvars[item]['swarm_status'].stdout == 'active'
 
 - name: Create group uninitialized_managers
   ansible.builtin.add_host:
     name: '{{ item }}'
     groups: uninitialized_managers
   loop: '{{ groups["swarm_managers"] }}'
-  when: hostvars[item]['swarm_status'].stdout == 'inactive'
+  when:
+    - hostvars[item]['swarm_status'].stdout == 'inactive'
 
 - name: Create group initialized_workers
   ansible.builtin.add_host:
     name: '{{ item }}'
     groups: initialized_workers
   loop: '{{ groups["swarm_workers"] }}'
-  when: hostvars[item]['swarm_status'].stdout == 'active'
+  when:
+    - hostvars[item]['swarm_status'].stdout == 'active'
 
 - name: Create group uninitialized_workers
   ansible.builtin.add_host:
     name: '{{ item }}'
     groups: uninitialized_workers
   loop: '{{ groups["swarm_workers"] }}'
-  when: hostvars[item]['swarm_status'].stdout == 'inactive'
+  when:
+    - hostvars[item]['swarm_status'].stdout == 'inactive'
 
-- name: Initialize Docker Swarm on the first uninitialized manager
+- name: Initialize Docker Swarm on the first uninitialized manager if no managers are initialized
   ansible.builtin.command:
     cmd: docker swarm init --advertise-addr {{ hostvars[groups['uninitialized_managers'][0]]['ansible_default_ipv4']['address'] }}
   when:
-    - "'uninitialized_managers' in groups"
+    - 'groups["initialized_managers"] is not defined'
     - inventory_hostname == groups['uninitialized_managers'][0]
-    - hostvars[groups['uninitialized_managers'][0]]['swarm_status'].stdout == 'inactive'
   changed_when: false
-  register: swarm_init
 
 - name: Add first uninitialized manager to initialized_managers group
   ansible.builtin.add_host:
@@ -73,13 +75,19 @@
   changed_when: false
   run_once: true
 
+- name: Update Swarm initialization status
+  ansible.builtin.command:
+    cmd: docker info --format '{{ '{{.Swarm.LocalNodeState}}' }}'
+  register: swarm_status
+  changed_when: false
+
 - name: Enroll uninitialized managers
   ansible.builtin.command:
     cmd: docker swarm join --token {{ manager_join_token.stdout }} {{ hostvars[groups['initialized_managers'][0]]['ansible_default_ipv4']['address'] }}:2377
   when:
     - 'groups["uninitialized_managers"] is defined'
     - inventory_hostname in groups['uninitialized_managers']
-    - inventory_hostname != groups['uninitialized_managers'][0]
+    - hostvars[inventory_hostname]['swarm_status'].stdout == 'inactive'
   changed_when: false
 
 - name: Enroll uninitialized workers
