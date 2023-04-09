@@ -10,7 +10,7 @@
   ansible.builtin.add_host:
     name: '{{ item }}'
     groups: initialized_managers
-  loop: '{{ groups["swarm_managers"] }}'
+  with_items: '{{ groups["swarm_managers"] }}'
   when:
     - hostvars[item]['swarm_status'].stdout == 'active'
 
@@ -18,7 +18,7 @@
   ansible.builtin.add_host:
     name: '{{ item }}'
     groups: uninitialized_managers
-  loop: '{{ groups["swarm_managers"] }}'
+  with_items: '{{ groups["swarm_managers"] }}'
   when:
     - hostvars[item]['swarm_status'].stdout == 'inactive'
 
@@ -26,15 +26,16 @@
   ansible.builtin.add_host:
     name: '{{ item }}'
     groups: initialized_workers
-  loop: '{{ groups["swarm_workers"] }}'
+  with_items: '{{ groups["swarm_workers"] }}'
   when:
     - hostvars[item]['swarm_status'].stdout == 'active'
+    - item
 
 - name: Create group uninitialized_workers
   ansible.builtin.add_host:
     name: '{{ item }}'
     groups: uninitialized_workers
-  loop: '{{ groups["swarm_workers"] }}'
+  with_items: '{{ groups["swarm_workers"] }}'
   when:
     - hostvars[item]['swarm_status'].stdout == 'inactive'
 
