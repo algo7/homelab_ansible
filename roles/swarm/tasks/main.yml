@@ -29,7 +29,6 @@
   with_items: '{{ groups["swarm_workers"] }}'
   when:
     - hostvars[item]['swarm_status'].stdout == 'active'
-    - item
 
 - name: Create group uninitialized_workers
   ansible.builtin.add_host:
