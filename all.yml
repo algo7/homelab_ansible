@@ -1,7 +1,7 @@
 # code: language=ansible
 ---
 - name: Install Docker and Form Docker Swarm
-  hosts: all
+  hosts: swarm_managers,swarm_workers
   gather_facts: true
   roles:
     - role: install
