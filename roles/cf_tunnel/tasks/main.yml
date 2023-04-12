@@ -5,6 +5,10 @@
     cmd: docker pull cloudflare/cloudflared
   changed_when: false
 
+- name: Import Cloudflare Tunnel Token
+  ansible.builtin.include_vars:
+    file: '{{ playbook_dir }}/secrets.yml.vault'
+
 - name: Generate Docker Compose File
   ansible.builtin.template:
     src: '{{ role_path }}/templates/cloudflared.yml.j2'
