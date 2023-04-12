@@ -4,3 +4,11 @@
   ansible.builtin.command:
     cmd: docker pull cloudflare/cloudflared
   changed_when: false
+
+- name: Generate Docker Compose File
+  ansible.builtin.template:
+    src: '{{ role_path }}/templates/cloudflared.yml.j2'
+    dest: /home/{{ ansible_user }}/cloudflared.yml
+    mode: '0644'
+  vars:
+    cf_tunnel_token: '{{ tunnel_token }}'
