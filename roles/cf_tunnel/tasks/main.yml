@@ -16,3 +16,8 @@
     mode: '0644'
   vars:
     cf_tunnel_token: '{{ tunnel_token }}'
+
+- name: Start Cloudflare Tunnel
+  ansible.builtin.command:
+    cmd: docker compose -f /home/{{ ansible_user }}/cloudflared.yml up -d
+  changed_when: false
