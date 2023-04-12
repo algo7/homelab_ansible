@@ -7,3 +7,9 @@
     - role: install
       become: true
     - role: swarm
+
+- name: Install and Start Cloudflare Tunnel
+  hosts: tunnel_hosts
+  gather_facts: true
+  roles:
+    - role: cf_tunnel
