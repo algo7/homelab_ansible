@@ -1,0 +1,8 @@
+# code: language=ansible
+---
+- name: Install qemu-guest-agent
+  ansible.builtin.apt:
+    update_cache: true
+    pkg:
+      - qemu-guest-agent
+    state: present

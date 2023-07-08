@@ -5,6 +5,7 @@
     update_cache: true
     pkg:
       - wireguard
+    state: present
 
 - name: Check if the Wireguard Private Key Exists
   ansible.builtin.stat:
