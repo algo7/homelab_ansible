@@ -24,7 +24,7 @@
     - role: cf_tunnel
 
 - name: Install Wireguard
-  hosts: wg
+  hosts: wireguard
   gather_facts: true
   roles:
     - role: wireguard
