@@ -11,9 +11,9 @@
     path: /etc/wireguard/privatekey
   register: wireguard_privatekey
 
-- name: Generate Wireguard Private Key if it Does not Exist
+- name: Generate Wireguard Private Key & Public
   ansible.builtin.shell: |
-    umask 077
-    wg genkey > /etc/wireguard/privatekey
+    set -o pipefail
+    wg genkey | tee /etc/wireguard/privatekey | wg pubkey | tee /etc/wireguard/publickey
   when: not wireguard_privatekey.stat.exists
   changed_when: false
