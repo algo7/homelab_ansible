@@ -1,2 +1,19 @@
 # code: language=ansible
 ---
+- name: Install prerequisites
+  ansible.builtin.apt:
+    update_cache: true
+    pkg:
+      - wireguard
+
+- name: Check if the Wireguard Private Key Exists
+  ansible.builtin.stat:
+    path: /etc/wireguard/privatekey
+  register: wireguard_privatekey
+
+- name: Generate Wireguard Private Key if it Does not Exist
+  ansible.builtin.shell: |
+    umask 077
+    wg genkey > /etc/wireguard/privatekey
+  when: not wireguard_privatekey.stat.exists
+  changed_when: false
