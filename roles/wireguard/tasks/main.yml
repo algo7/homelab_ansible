@@ -32,3 +32,4 @@
     mode: '0600'
   vars:
     encoded_wireguard_private_key: '{{ wireguard_privatekey_base64.content }}'
+    wireguard_ip_address_cidr: '172.16.0.0/24'
