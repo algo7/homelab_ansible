@@ -19,3 +19,9 @@
   changed_when: false
 
 - name: Create Wireguard Server Configuration
+  ansible.builtin.template:
+    src: '{{ role_path }}/templates/wireguard.conf.j2'
+    dest: /etc/wireguard/wg0.conf
+    owner: root
+    group: root
+    mode: '0600'
