@@ -19,7 +19,8 @@
   when: not wireguard_privatekey.stat.exists
   changed_when: false
 
-- name: Get Base64 Encodd Wireguard Private Key on the Remote Server
+# The wireguard private key is already encoded with base64, but we slurp it get the content. In this case, it's base64 encoded twice.
+- name: Get Base64 Encoded Wireguard Private Key on the Remote Server
   ansible.builtin.slurp:
     src: /etc/wireguard/privatekey
   register: wireguard_privatekey_base64
@@ -32,10 +33,13 @@
     group: root
     mode: '0600'
   vars:
-    encoded_wireguard_private_key: '{{ wireguard_privatekey_base64.content }}'
+    encoded_wireguard_private_key: '{{ wireguard_privatekey_base64.content | b64decode }}'
     wireguard_ip_address_cidr: '172.16.0.0/24'
     # Can also be obtained via ip -o -4 route show to default | awk '{print $5}'
     outbound_network_interface: '{{ ansible_default_ipv4.interface }}'
+  # technically we can check if the config file exists, but checking for the private key is good enough
+  # cuz if the private key exists, the config file should exist too (usually)
+  when: not wireguard_privatekey.stat.exists
 
 - name: Enable IP Forwarding
   ansible.posix.sysctl:
