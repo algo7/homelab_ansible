@@ -33,6 +33,7 @@
   vars:
     encoded_wireguard_private_key: '{{ wireguard_privatekey_base64.content }}'
     wireguard_ip_address_cidr: '172.16.0.0/24'
+    # Can also be obtained via ip -o -4 route show to default | awk '{print $5}'
     outbound_network_interface: '{{ ansible_default_ipv4.interface }}'
 
 - name: Enable IP Forwarding
