@@ -18,6 +18,11 @@
   when: not wireguard_privatekey.stat.exists
   changed_when: false
 
+- name: Get Base64 Encodd Wireguard Private Key on the Remote Server
+  ansible.builtin.slurp:
+    src: /etc/wireguard/privatekey
+  register: wireguard_privatekey_base64
+
 - name: Create Wireguard Server Configuration
   ansible.builtin.template:
     src: '{{ role_path }}/templates/wireguard.conf.j2'
@@ -25,3 +30,5 @@
     owner: root
     group: root
     mode: '0600'
+  vars:
+    encoded_wireguard_private_key: '{{ wireguard_privatekey_base64.content }}'
