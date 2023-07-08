@@ -44,3 +44,9 @@
     sysctl_set: true
     state: present
     reload: true
+
+- name: Enable Wireguard Service
+  ansible.builtin.systemd:
+    name: wg-quick@wg0
+    enabled: true
+    state: started
