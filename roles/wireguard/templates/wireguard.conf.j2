@@ -4,3 +4,8 @@ Address = {{ wireguard_ip_address_cidr }}
 ListenPort = 51820
 # Ensure that the config gets saved on shutdown
 SaveConfig = true
+# Startup script
+PostUp = iptables -t nat -I POSTROUTING -o {{ outbound_network_interface }} -j MASQUERADE
+
+# Pre-shutdown script
+PreDown = iptables -t nat -D POSTROUTING -o {{ outbound_network_interface }} -j MASQUERADE
