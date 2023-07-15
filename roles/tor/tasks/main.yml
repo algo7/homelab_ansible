@@ -20,3 +20,11 @@
       - deb [arch=amd64  signed-by=/usr/share/keyrings/tor-archive-keyring.gpg] https://deb.torproject.org/torproject.org {{ ansible_distribution }} main
       - deb-src [arch=amd64 signed-by=/usr/share/keyrings/tor-archive-keyring.gpg] https://deb.torproject.org/torproject.org {{ ansible_distribution }} main
     state: present
+
+- name: Install Tor and debian keyring
+  ansible.builtin.apt:
+    update_cache: true
+    pkg:
+      - tor
+      - deb.torproject.org-keyring
+    state: present
