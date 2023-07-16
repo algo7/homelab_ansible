@@ -6,6 +6,7 @@
     pkg:
       - apt-transport-https
       - unbound
+      - p7zip-full
     state: present
 
 - name: Enable unbound
