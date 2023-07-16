@@ -80,6 +80,7 @@
     mode: '0644'
   vars:
     relay_nickname: '{{ tor_relay_nickname }}'
+    relay_contact_info: '{{ tor_relay_contact_info }}'
     relay_ipv4_address: '{{ tor_relay_ipv4_address }}'
     relay_ipv6_address: '{{ tor_relay_ipv6_address }}'
     relay_family_members: '{{ tor_relay_family_members }}'
