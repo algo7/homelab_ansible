@@ -54,7 +54,20 @@
     - /node1
     - /node2
 
-- name: Configure Tor [Node 1]
+- name: Create Log Files for Tor Exit Node 1 and 2
+  ansible.builtin.file:
+    path: '/etc/tor/{{ item }}'
+    state: touch
+    owner: debian-tor
+    group: debian-tor
+    mode: '0644'
+    modification_time: preserve
+    access_time: preserve
+  loop:
+    - /node1/notices.log
+    - /node2/notices.log
+
+- name: Configure Tor Node 1
   ansible.builtin.template:
     src: torrc.j2
     dest: /etc/tor/node1/torrc
