@@ -115,3 +115,11 @@
     mode: '0644'
     modification_time: preserve
     access_time: preserve
+
+- name: Fix unbound AppArmor Profile
+  ansible.builtin.copy:
+    src: unbound.apparmor.profile
+    dest: /etc/apparmor.d/local/usr.sbin.unbound
+    owner: root
+    group: root
+    mode: '0644'
