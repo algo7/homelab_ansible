@@ -6,10 +6,14 @@ After=systemd-user-sessions.service
 After=network-online.target
 
 [Service]
-Type=simple
+Type=forking
 Environment="opt=-f /etc/tor/node1/torrc"
 ExecStart=/usr/bin/tor $opt
+PIDFile=/run/tor/torr.pid
 ExecStop=/usr/bin/kill -2 $MAINPID
+ExecReload=/bin/kill -HUP $MAINPID
+KillSignal=SIGINT
+TimeoutSec=300
 Restart=always
 
 [Install]

@@ -9,7 +9,11 @@ After=network-online.target
 Type=simple
 Environment="opt=-f /etc/tor/node2/torrc1"
 ExecStart=/usr/bin/tor $opt
+PIDFile=/run/tor/torr1.pid
 ExecStop=/usr/bin/kill -2 $MAINPID
+ExecReload=/bin/kill -HUP $MAINPID
+KillSignal=SIGINT
+TimeoutSec=300
 Restart=always
 
 [Install]
