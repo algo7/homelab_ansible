@@ -43,6 +43,14 @@
       - deb.torproject.org-keyring
     state: present
 
+- name: Create .nyx Directory
+  ansible.builtin.file:
+    path: /home/{{ ansible_user }}/.nyx
+    state: directory
+    owner: '{{ ansible_user }}'
+    group: '{{ ansible_user }}'
+    mode: '0755'
+
 - name: Copy nyx Config
   ansible.builtin.copy:
     src: nyx.conf
