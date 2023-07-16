@@ -206,7 +206,7 @@
 
 - name: Copy Tor Node 2 systemd Service File
   ansible.builtin.copy:
-    src: torr2.service
+    src: torr1.service
     dest: /etc/systemd/system/torr1.service
     owner: root
     group: root
