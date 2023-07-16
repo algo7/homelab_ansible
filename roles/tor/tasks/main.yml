@@ -117,6 +117,17 @@
     relay_oport: '{{ tor_relay_oport }}'
     relay_oport_node2: '{{ tor_relay_oport_node2 }}'
 
+- name: Create Tor Exit Relay Keys Directory
+  ansible.builtin.file:
+    path: /etc/tor/{{ item }}/keys
+    state: directory
+    owner: debian-tor
+    group: debian-tor
+    mode: '0644'
+  loop:
+    - node1
+    - node2
+
 - name: Copy unbound Config
   ansible.builtin.copy:
     src: unbound.tor.conf
