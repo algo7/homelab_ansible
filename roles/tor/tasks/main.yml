@@ -215,3 +215,18 @@
     name: torr1
     enabled: true
     state: started
+
+- name: Setup ufw rules to allow
+  ansible.builtin.command:
+    cmd: |
+      ufw default deny incoming
+      ufw default allow outgoing
+      ufw allow 9001
+      ufw allow 443
+      ufw allow 80
+  changed_when: false
+
+- name: Enable ufw
+  ansible.builtin.command:
+    cmd: yes | ufw enable
+  changed_when: false
