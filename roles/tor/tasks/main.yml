@@ -140,7 +140,7 @@
 - name: Copy Tor Relay Secret ID Key for Node 1
   ansible.builtin.copy:
     src: tor_n1_secret_id_key.vault
-    dest: /etc/tor/node1/keys/tor_n1_secret_id_key
+    dest: /etc/tor/node1/keys/secret_id_key
     owner: debian-tor
     group: debian-tor
     mode: '600'
@@ -156,7 +156,7 @@
 - name: Copy Tor Relay Secret ID Key for Node 2
   ansible.builtin.copy:
     src: tor_n2_secret_id_key.vault
-    dest: /etc/tor/node2/keys/tor_n2_secret_id_key
+    dest: /etc/tor/node2/keys/secret_id_key
     owner: debian-tor
     group: debian-tor
     mode: '600'
@@ -205,6 +205,11 @@
     name: unbound
     state: restarted
 
+- name: Check if resolv.conf.backup exists
+  ansible.builtin.stat:
+    path: /etc/resolv.conf.backup
+  register: resolv_conf_backup
+
 - name: Create Backup of resolv.conf if it doesn't exist
   ansible.builtin.command:
     cmd: cp -n /etc/resolv.conf /etc/resolv.conf.backup
@@ -214,11 +219,13 @@
   ansible.builtin.file:
     path: /run/systemd/resolve/stub-resolv.conf
     state: absent
+  when: not resolv_conf_backup.stat.exists
 
-- name: Remove Default resolv.conf
+- name: Remove Default resolv.conf if the backup does not exist
   ansible.builtin.file:
     path: /etc/resolv.conf
     state: absent
+  when: not resolv_conf_backup.stat.exists
 
 - name: Create New resolv.conf With Local DNS Server Address
   ansible.builtin.lineinfile:
