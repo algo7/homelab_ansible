@@ -97,8 +97,8 @@
     modification_time: preserve
     access_time: preserve
   loop:
-    - /node1/notices.log
-    - /node2/notices.log
+    - /node1/tor.log
+    - /node2/tor.log
 
 - name: Load Encrypted Variables for Populating Torrc Files
   ansible.builtin.include_vars:
