@@ -18,7 +18,6 @@
   ansible.builtin.apt_repository:
     update_cache: true
     filename: tor
-
     repo: 'deb [arch=amd64 signed-by=/usr/share/keyrings/tor-archive-keyring.gpg] https://deb.torproject.org/torproject.org {{ ansible_distribution_release }} main'
     state: present
 
@@ -37,6 +36,14 @@
       - tor
       - deb.torproject.org-keyring
     state: present
+
+- name: Copy nyx Config
+  ansible.builtin.copy:
+    src: nyx.conf
+    dest: /home/{{ ansible_user }}/.nyx/config
+    owner: '{{ ansible_user }}'
+    group: '{{ ansible_user }}'
+    mode: '0644'
 
 - name: Copy Tor Exit Notice Page
   ansible.builtin.copy:
