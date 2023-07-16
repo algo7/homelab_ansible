@@ -9,7 +9,6 @@ After=network-online.target
 Type=forking
 Environment="opt=-f /etc/tor/node1/torrc"
 ExecStart=/usr/bin/tor $opt
-PIDFile=/run/tor/torr.pid
 ExecStop=/usr/bin/kill -2 $MAINPID
 ExecReload=/bin/kill -HUP $MAINPID
 KillSignal=SIGINT
