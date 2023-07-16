@@ -10,18 +10,24 @@
 - name: Add Tor's official GPG key
   ansible.builtin.apt_key:
     url: 'https://deb.torproject.org/torproject.org/A3C4F0F979CAA22CDBA8F512EE8CBC9E886DDD89.asc'
+    keyring: /usr/share/keyrings/tor-archive-keyring.gpg
     state: present
 
 - name: Add Tor's official apt repository
   ansible.builtin.apt_repository:
     update_cache: true
     filename: tor
-    repo:
-      - deb [arch=amd64  signed-by=/usr/share/keyrings/tor-archive-keyring.gpg] https://deb.torproject.org/torproject.org {{ ansible_distribution }} main
-      - deb-src [arch=amd64 signed-by=/usr/share/keyrings/tor-archive-keyring.gpg] https://deb.torproject.org/torproject.org {{ ansible_distribution }} main
+    repo: 'deb [arch=amd64 signed-by=/usr/share/keyrings/tor-archive-keyring.gpg] https://deb.torproject.org/torproject.org {{ ansible_distribution_release }} main'
     state: present
 
-- name: Install Tor and debian keyring
+- name: Add Tor's official apt source repository
+  ansible.builtin.apt_repository:
+    update_cache: true
+    filename: tor
+    repo: 'deb-src [arch=amd64 signed-by=/usr/share/keyrings/tor-archive-keyring.gpg] https://deb.torproject.org/torproject.org {{ ansible_distribution_release }} main'
+    state: present
+
+- name: Install prerequisites
   ansible.builtin.apt:
     update_cache: true
     pkg:
