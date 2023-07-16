@@ -76,6 +76,16 @@
     group: debian-tor
     mode: '0644'
 
+- name: Check for Tor Exit Node 1 Directory
+  ansible.builtin.stat:
+    path: /etc/tor/node1
+  register: node1_dir
+
+- name: Check for Tor Exit Node 2 Directory
+  ansible.builtin.stat:
+    path: /etc/tor/node2
+  register: node2_dir
+
 - name: Create Directories for Tor Exit Node 1 and 2
   ansible.builtin.file:
     path: '/etc/tor/{{ item }}'
@@ -86,6 +96,7 @@
   loop:
     - /node1
     - /node2
+  when: not node1_dir.stat.exists and not node2_dir.stat.exists
 
 - name: Create Log Files for Tor Exit Node 1 and 2
   ansible.builtin.file:
@@ -99,6 +110,7 @@
   loop:
     - /node1/tor.log
     - /node2/tor.log
+  when: not node1_dir.stat.exists and not node2_dir.stat.exists
 
 - name: Load Encrypted Variables for Populating Torrc Files
   ansible.builtin.include_vars:
@@ -130,6 +142,7 @@
   loop:
     - node1
     - node2
+  when: not node1_dir.stat.exists and not node2_dir.stat.exists
 
 - name: Copy Tor Relay ED25519 Master ID Secret Key for Node 1
   ansible.builtin.copy:
