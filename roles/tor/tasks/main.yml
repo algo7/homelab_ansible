@@ -8,6 +8,12 @@
       - unbound
     state: present
 
+- name: Enable unbound
+  ansible.builtin.service:
+    name: unbound
+    enabled: true
+    state: started
+
 - name: Add Tor's official GPG key
   ansible.builtin.apt_key:
     url: 'https://deb.torproject.org/torproject.org/A3C4F0F979CAA22CDBA8F512EE8CBC9E886DDD89.asc'
@@ -141,3 +147,8 @@
   ansible.builtin.command:
     cmd: 'apparmor_parser -r /etc/apparmor.d/usr.sbin.unbound'
   changed_when: false
+
+- name: Restart unbound
+  ansible.builtin.service:
+    name: unbound
+    state: restarted
