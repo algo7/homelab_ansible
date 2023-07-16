@@ -7,6 +7,7 @@
       - apt-transport-https
       - unbound
       - p7zip-full
+      - net-tools
     state: present
 
 - name: Enable unbound
@@ -275,21 +276,20 @@
     name: torr1
     enabled: true
     state: started
+# - name: Setup ufw rules to allow
+#   ansible.builtin.command:
+#     cmd: |
+#       ufw default deny incoming
+#       ufw default allow outgoing
+#       ufw allow 9001 comment 'Tor OPort'
+#       ufw allow 443 comment 'Tor ORPort'
+#       ufw allow 80 comment 'Tor DirPort'
+#       ufw allow 192.168.1.0/24 to any port 22 comment 'SSH Internal'
+#       ufw allow 10.0.0.0/24 to any port 22 comment 'SSH Internal'
+#   changed_when: false
 
-- name: Setup ufw rules to allow
-  ansible.builtin.command:
-    cmd: |
-      ufw default deny incoming
-      ufw default allow outgoing
-      ufw allow 9001 comment 'Tor OPort'
-      ufw allow 443 comment 'Tor ORPort'
-      ufw allow 80 comment 'Tor DirPort'
-      ufw allow 192.168.1.0/24 to any port 22 comment 'SSH Internal'
-      ufw allow 10.0.0.0/24 to any port 22 comment 'SSH Internal'
-  changed_when: false
-
-- name: Enable UFW Service
-  ansible.builtin.service:
-    name: ufw
-    enabled: true
-    state: started
+# - name: Enable UFW Service
+#   ansible.builtin.service:
+#     name: ufw
+#     enabled: true
+#     state: started
