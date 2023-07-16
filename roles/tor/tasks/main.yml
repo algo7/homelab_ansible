@@ -52,7 +52,7 @@
     state: directory
     owner: debian-tor
     group: debian-tor
-    mode: '0755'
+    mode: '0644'
   loop:
     - /node1
     - /node2
@@ -89,3 +89,11 @@
     relay_family_members: '{{ tor_relay_family_members }}'
     relay_oport: '{{ tor_relay_oport }}'
     relay_oport_node2: '{{ tor_relay_oport_node2 }}'
+
+- name: Copy unbound Config
+  ansible.builtin.copy:
+    src: unbound.tor.conf
+    dest: /etc/unbound/unbound.conf.d/tor.conf
+    owner: root
+    group: root
+    mode: '0644'
