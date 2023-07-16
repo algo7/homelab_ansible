@@ -69,7 +69,7 @@
     - /node1/notices.log
     - /node2/notices.log
 
-- name: Load encrypted vars
+- name: Load Encrypted Variables for Populating Torrc Files
   ansible.builtin.include_vars:
     file: secrets.yml.vault
 
