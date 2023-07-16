@@ -168,3 +168,19 @@
     owner: root
     group: root
     mode: '0644'
+
+- name: Reload systemd
+  ansible.builtin.command:
+    cmd: 'systemctl daemon-reload'
+
+- name: Enable Tor Node 1 systemd Service
+  ansible.builtin.service:
+    name: torr
+    enabled: true
+    state: started
+
+- name: Enable Tor Node 2 systemd Service
+  ansible.builtin.service:
+    name: torr1
+    enabled: true
+    state: started
