@@ -5,6 +5,7 @@
     update_cache: true
     pkg:
       - apt-transport-https
+      - unbound
     state: present
 
 - name: Add Tor's official GPG key
