@@ -288,7 +288,8 @@
       ufw allow 10.0.0.0/24 to any port 22 comment 'SSH Internal'
   changed_when: false
 
-- name: Enable ufw
-  ansible.builtin.command:
-    cmd: yes | ufw enable
-  changed_when: false
+- name: Enable UFW Service
+  ansible.builtin.service:
+    name: ufw
+    enabled: true
+    state: started
