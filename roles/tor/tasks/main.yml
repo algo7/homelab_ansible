@@ -82,7 +82,7 @@
     state: directory
     owner: debian-tor
     group: debian-tor
-    mode: '0644'
+    mode: '750'
   loop:
     - /node1
     - /node2
@@ -140,7 +140,7 @@
     state: directory
     owner: debian-tor
     group: debian-tor
-    mode: '0644'
+    mode: '700'
   loop:
     - node1
     - node2
