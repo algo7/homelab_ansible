@@ -152,3 +152,19 @@
   ansible.builtin.service:
     name: unbound
     state: restarted
+
+- name: Copy Tor Node 1 systemd Service File
+  ansible.builtin.copy:
+    src: torr.service
+    dest: /etc/systemd/system/torr.service
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Copy Tor Node 2 systemd Service File
+  ansible.builtin.copy:
+    src: torr2.service
+    dest: /etc/systemd/system/torr1.service
+    owner: root
+    group: root
+    mode: '0644'
