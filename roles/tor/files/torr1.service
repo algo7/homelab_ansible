@@ -1,0 +1,16 @@
+[Unit]
+Description=Tor relay service 1
+After=multi-user.target
+After=network.target
+After=systemd-user-sessions.service
+After=network-online.target
+
+[Service]
+Type=simple
+Environment="opt=-f /etc/tor/node2/torrc1"
+ExecStart=/usr/bin/tor $opt
+ExecStop=/usr/bin/kill -2 $MAINPID
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
