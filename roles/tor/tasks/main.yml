@@ -35,12 +35,20 @@
       - deb.torproject.org-keyring
     state: present
 
+- name: Copy Tor Exit Notice Page
+  ansible.builtin.copy:
+    src: tor-exit-notice.html
+    dest: /etc/tor/tor-exit-notice.html
+    owner: debian-tor
+    group: debian-tor
+    mode: '0644'
+
 - name: Create Directories for Tor Exit Node 1 and 2
   ansible.builtin.file:
     path: '/etc/tor/{{ item }}'
     state: directory
-    owner: root
-    group: root
+    owner: debian-tor
+    group: debian-tor
     mode: '0755'
   loop:
     - /node1
@@ -50,6 +58,6 @@
   ansible.builtin.template:
     src: torrc.j2
     dest: /etc/tor/node1/torrc
-    owner: root
-    group: root
+    owner: debian-tor
+    group: debian-tor
     mode: '0644'
