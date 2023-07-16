@@ -123,3 +123,8 @@
     owner: root
     group: root
     mode: '0644'
+
+- name: Reload AppArmor Security Profile
+  ansible.builtin.command:
+    cmd: 'apparmor_parser -r /etc/apparmor.d/usr.sbin.unbound'
+  changed_when: false
