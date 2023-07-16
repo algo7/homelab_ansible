@@ -6,7 +6,7 @@ After=systemd-user-sessions.service
 After=network-online.target
 
 [Service]
-Type=simple
+Type=forking
 Environment="opt=-f /etc/tor/node2/torrc1"
 ExecStart=/usr/bin/tor $opt
 ExecStop=/usr/bin/kill -2 $MAINPID
