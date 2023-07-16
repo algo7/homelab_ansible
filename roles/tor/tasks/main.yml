@@ -153,10 +153,10 @@
     name: unbound
     state: restarted
 
-- name: Backup the Original resolv.conf
+- name: Create Backup of resolv.conf if it doesn't exist
   ansible.builtin.command:
     cmd: cp -n /etc/resolv.conf /etc/resolv.conf.backup
-  creates: /etc/resolv.conf.backup
+  changed_when: false
 
 - name: Remove Default symlink
   ansible.builtin.file:
