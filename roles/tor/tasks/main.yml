@@ -42,6 +42,7 @@
     pkg:
       - tor
       - deb.torproject.org-keyring
+      - nyx
     state: present
 
 - name: Create .nyx Directory
