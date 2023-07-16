@@ -27,10 +27,29 @@
     repo: 'deb-src [arch=amd64 signed-by=/usr/share/keyrings/tor-archive-keyring.gpg] https://deb.torproject.org/torproject.org {{ ansible_distribution_release }} main'
     state: present
 
-- name: Install prerequisites
+- name: Install tor, nyx, and debian keyring
   ansible.builtin.apt:
     update_cache: true
     pkg:
       - tor
       - deb.torproject.org-keyring
     state: present
+
+- name: Create Directories for Tor Exit Node 1 and 2
+  ansible.builtin.file:
+    path: '/etc/tor/{{ item }}'
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+  loop:
+    - /node1
+    - /node2
+
+- name: Configure Tor [Node 1]
+  ansible.builtin.template:
+    src: torrc.j2
+    dest: /etc/tor/node1/torrc
+    owner: root
+    group: root
+    mode: '0644'
