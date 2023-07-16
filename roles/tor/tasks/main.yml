@@ -153,6 +153,41 @@
     name: unbound
     state: restarted
 
+- name: Backup the Original resolv.conf
+  ansible.builtin.command:
+    cmd: cp -n /etc/resolv.conf /etc/resolv.conf.backup
+  creates: /etc/resolv.conf.backup
+
+- name: Remove Default symlink
+  ansible.builtin.file:
+    path: /run/systemd/resolve/stub-resolv.conf
+    state: absent
+
+- name: Remove Default resolv.conf
+  ansible.builtin.file:
+    path: /etc/resolv.conf
+    state: absent
+
+- name: Create New resolv.conf With Local DNS Server Address
+  ansible.builtin.lineinfile:
+    path: /etc/resolv.conf
+    line: 'nameserver 127.0.0.1'
+    owner: root
+    group: root
+    mode: '0644'
+    create: true
+    state: present
+
+- name: Lock resolv.conf from being changed
+  ansible.builtin.command:
+    cmd: chattr +i /etc/resolv.conf
+  changed_when: false
+
+- name: Restart resolved Service
+  ansible.builtin.service:
+    name: systemd-resolved
+    state: restarted
+
 - name: Copy Tor Node 1 systemd Service File
   ansible.builtin.copy:
     src: torr.service
