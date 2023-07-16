@@ -45,6 +45,12 @@
     group: '{{ ansible_user }}'
     mode: '0644'
 
+- name: Add user to debian-tor group
+  ansible.builtin.user:
+    name: '{{ ansible_user }}'
+    groups: debian-tor
+    append: true
+
 - name: Copy Tor Exit Notice Page
   ansible.builtin.copy:
     src: tor-exit-notice.html
