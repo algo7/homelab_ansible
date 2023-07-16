@@ -129,6 +129,38 @@
     - node1
     - node2
 
+- name: Copy Tor Relay ED25519 Master ID Secret Key for Node 1
+  ansible.builtin.copy:
+  src: tor_n1_ed25519_master_id_secret_key.vault
+  dest: /etc/tor/node1/keys/ed25519_master_id_secret_key
+  owner: debian-tor
+  group: debian-tor
+  mode: '600'
+
+- name: Copy Tor Relay Secret ID Key for Node 1
+  ansible.builtin.copy:
+  src: tor_n1_secret_id_key.vault
+  dest: /etc/tor/node1/keys/tor_n1_secret_id_key
+  owner: debian-tor
+  group: debian-tor
+  mode: '600'
+
+- name: Copy Tor Relay ED25519 Master ID Secret Key for Node 2
+  ansible.builtin.copy:
+  src: tor_n2_ed25519_master_id_secret_key.vault
+  dest: /etc/tor/node2/keys/ed25519_master_id_secret_key
+  owner: debian-tor
+  group: debian-tor
+  mode: '600'
+
+- name: Copy Tor Relay Secret ID Key for Node 2
+  ansible.builtin.copy:
+  src: tor_n2_secret_id_key.vault
+  dest: /etc/tor/node2/keys/tor_n2_secret_id_key
+  owner: debian-tor
+  group: debian-tor
+  mode: '600'
+
 - name: Copy unbound Config
   ansible.builtin.copy:
     src: unbound.tor.conf
