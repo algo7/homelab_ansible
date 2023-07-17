@@ -16,7 +16,7 @@
  ]
 }
 ```
-# Set Default S3 Access Key and Secret Key in All Elasticsearch Nodes
+# Set Default S3 Access Key and Secret Key in 1 Elastic Search Master Node
 ```bash
 # Go into the Elastic Search Container
 docker exec -it <container_name_or_id> bash
@@ -25,6 +25,18 @@ docker exec -it <container_name_or_id> bash
 # Enter the access key
 /usr/share/elasticsearch/bin/elasticsearch-keystore add s3.client.default.secret_key
 # Enter the secret key
+```
+
+You will have to restart your cluster after this.
+
+# Sync the ElasticSearch Keystore to the other Elastic Search Master Nodes
+```bash
+# Go to the Kibana Console
+# Run the following command
+POST _nodes/reload_secure_settings
+{
+  "secure_settings_password": "keystore_password_or_empty_if_not_set" 
+}
 ```
 # Create S3 Repository via Kibana Console
 ```bash
