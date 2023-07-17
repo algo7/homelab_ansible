@@ -9,8 +9,8 @@
                 "s3:*"
             ],
             "Resource": [
-                "arn:aws:s3:::elasticsearch",
-                "arn:aws:s3:::elasticsearch/*"
+                "arn:aws:s3:::bucket_name",
+                "arn:aws:s3:::bucket_name/*"
             ]
         },
         {
