@@ -10,8 +10,8 @@ services:
       - target: 9090  # Target port inside the container
         published: 9090  # Published port on the host
     environment:
-      MINIO_ROOT_USER: '{{ minio_root_user }}'
-      MINIO_ROOT_PASSWORD: '{{ minio_root_password }}'
+      MINIO_ROOT_USER: '{{ root_user }}'
+      MINIO_ROOT_PASSWORD: '{{ root_password }}'
     volumes:
       - type: volume
         source: nfs
@@ -24,4 +24,4 @@ volumes:
     driver_opts:
       type: nfs
       o: 'addr={{ nfs_address }},vers=4,rw'
-      device: '{{ nfs_path }}'
+      device: ':{{ nfs_path }}'
