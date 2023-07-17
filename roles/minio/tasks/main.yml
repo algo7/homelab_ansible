@@ -1,0 +1,6 @@
+# code: language=ansible
+---
+- name: Pull Minio Image
+  ansible.builtin.command:
+    cmd: docker pull quay.io/minio/minio
+  changed_when: false
