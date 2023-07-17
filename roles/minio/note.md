@@ -1,19 +1,25 @@
 # Create an Access Key via the Minio UI With the Policy Below
 ```json
 {
- "Version": "2012-10-17",
- "Statement": [
-  {
-   "Effect": "Allow",
-   "Action": [
-    "s3:*"
-   ],
-   "Resource": [
-    "arn:aws:s3:::bucket_name",
-    "arn:aws:s3:::bucket_name/*"
-   ]
-  }
- ]
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "s3:*"
+            ],
+            "Resource": [
+                "arn:aws:s3:::elasticsearch",
+                "arn:aws:s3:::elasticsearch/*"
+            ]
+        },
+        {
+            "Effect": "Deny",
+            "Action": [
+                "admin:*"
+            ]
+        }
+    ]
 }
 ```
 # Set Default S3 Access Key and Secret Key in 1 Elastic Search Master Node
