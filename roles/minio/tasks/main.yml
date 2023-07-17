@@ -9,15 +9,19 @@
   ansible.builtin.include_vars:
     file: secrets.yml.vault
 
-- name: Generate Docker Compose file:
+- name: Generate Docker Compose file
   ansible.builtin.template:
     src: minio.j2
     dest: /home/{{ ansible_user }}/minio.yml
     mode: '0644'
   vars:
-    root_user: "{{ minio_root_user }}"
-    root_password: "{{ minio_root_password }}"
-    nfs_address: "{{ minio_nfs_address }}"
-    nfs_path: "{{ minio_nfs_path }}"
+    root_user: '{{ minio_root_user }}'
+    root_password: '{{ minio_root_password }}'
+    nfs_address: '{{ minio_nfs_address }}'
+    nfs_path: '{{ minio_nfs_path }}'
   changed_when: false
-  
+
+- name: Start Minio
+  ansible.builtin.command:
+    cmd: docker compose -f /home/{{ ansible_user }}/minio.yml up -d
+  changed_when: false
