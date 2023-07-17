@@ -28,17 +28,25 @@
   roles:
     - role: wireguard
       become: true
-# - name: Install and Start Cloudflare Tunnel
-#   hosts: tunnel_hosts
-#   gather_facts: true
-#   roles:
-#     - role: docker
-#       become: true
-#     - role: cf_tunnel
+- name: Install and Start Cloudflare Tunnel
+  hosts: tunnel_hosts
+  gather_facts: true
+  roles:
+    - role: docker
+      become: true
+    - role: cf_tunnel
 
-# - name: Install Tor and Setup Tor Exit Node
-#   hosts: tor_exit
-#   gather_facts: true
-#   roles:
-#     - role: tor
-#       become: true
+- name: Install Tor and Setup Tor Exit Node
+  hosts: tor_exit
+  gather_facts: true
+  roles:
+    - role: tor
+      become: true
+
+- name: Install and Start Minio
+  hosts: local_swarm_w_high
+  gather_facts: true
+  roles:
+    - role: docker
+      become: true
+    - role: minio
