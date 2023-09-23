@@ -1,0 +1,6 @@
+# code: language=ansible
+---
+- name: Reload AppArmor Security Profile
+  ansible.builtin.command:
+    cmd: 'elastic-agent restart'
+  changed_when: false
