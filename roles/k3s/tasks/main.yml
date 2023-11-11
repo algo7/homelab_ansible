@@ -1,8 +1,9 @@
 # code: language=ansible
 ---
-- name: Install policycoreutils
+- name: Install K3S Requirements
   ansible.builtin.apt:
     update_cache: true
     pkg:
       - policycoreutils
+      - wireguard
     state: present
