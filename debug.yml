@@ -1,4 +1,6 @@
 # code: language=ansible
+# File for testing ansible playbooks
+---
 - name: Debug
   hosts: all
   gather_facts: yes
