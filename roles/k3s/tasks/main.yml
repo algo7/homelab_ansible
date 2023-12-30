@@ -1,19 +1,19 @@
 # code: language=ansible
 ---
-- name: Check if K3S is already installed
-  ansible.builtin.shell:
-    cmd: 'test -f /usr/local/bin/k3s'
-  register: k3s_installed
-  failed_when: false
-
 - name: Install K3S Requirements
   ansible.builtin.apt:
     update_cache: true
     pkg:
       - policycoreutils
       - wireguard
+      - nfs-common
     state: present
-  when: k3s_installed.rc != 0
+
+- name: Check if K3S is already installed
+  ansible.builtin.shell:
+    cmd: 'test -f /usr/local/bin/k3s'
+  register: k3s_installed
+  failed_when: false
 
 - name: Download K3s installation script
   ansible.builtin.uri:
