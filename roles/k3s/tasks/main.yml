@@ -26,6 +26,7 @@
 - name: Import K3S Token
   ansible.builtin.include_vars:
     file: k3s-secrets.yml.vault
+  when: k3s_installed.rc != 0
 
 # Note that the node_type variable is set in the inventory file
 - name: Execute K3s installation script [Initial Master Node]
