@@ -40,7 +40,7 @@
 
 - name: Execute K3s installation script [Master Nodes]
   ansible.builtin.shell:
-    cmd: 'sh /tmp/k3s_install.sh --token {{ k3s_token }} --disable=traefik --flannel-backend=vxlan --server https://{{ hostvars["k3s-m1"]["ansible_default_ipv4"]["address"] }}:6443'
+    cmd: 'sh /tmp/k3s_install.sh --token {{ k3s_token }} --disable=traefik,servicelb --flannel-backend=vxlan --server https://{{ hostvars["k3s-m1"]["ansible_default_ipv4"]["address"] }}:6443'
   vars:
     k3s_token: '{{ k3s_token }}'
   args:
