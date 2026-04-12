@@ -1,0 +1,45 @@
+---
+- name: Check if RKE2 is already installed
+  ansible.builtin.shell:
+    cmd: 'test -f /usr/local/bin/rke2'
+  register: rke2_installed
+  failed_when: false
+
+- name: Download RKE2 installation script
+  ansible.builtin.uri:
+    url: 'https://get.rke2.io'
+    method: GET
+    return_content: yes
+    dest: '/tmp/rke2_install.sh'
+  when: rke2_installed.rc != 0
+
+- name: Execute RKE2 installation script [Initial Master Node]
+  ansible.builtin.shell:
+    cmd: 'sh /tmp/rke2_install.sh'
+  when: rke2_installed.rc != 0
+
+- name: Enable and start RKE2 service
+  ansible.builtin.systemd:
+    name: rke2-server
+    enabled: true
+    state: started
+  when: rke2_installed.rc != 0
+
+- name: Wait for RKE2 API to be available
+  ansible.builtin.wait_for:
+    host: "{{ ansible_default_ipv4.address }}"
+    port: 6443
+    timeout: 300
+  when: rke2_installed.rc != 0
+
+- name: Get the Installation Token
+  ansible.builtin.shell:
+    cmd: 'cat /var/lib/rancher/rke2/server/node-token'
+  register: rke2_token
+  when: rke2_installed.rc != 0
+
+- name: Set RKE2 Token fact
+  ansible.builtin.set_fact:
+    rke2_token: "{{ rke2_token.stdout }}"
+  when: rke2_installed.rc != 0
+  run_once: true
